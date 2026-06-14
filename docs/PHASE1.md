@@ -7,8 +7,8 @@ This document tracks what is built, verified, and outstanding.
 
 ## 1. Gossip protocol (Solana / SOL) — `programs/poi-gossip`
 
-Layer 1 intent broadcast. Status: **source complete**, builds with the Anchor +
-Solana SBF toolchain (not run in this container).
+Layer 1 intent broadcast. Status: **compiles** (`cargo check --workspace` → 0
+errors). Full SBF build + `anchor test` need the Solana toolchain.
 
 Implements:
 - `initialize` / `set_params` — protocol config (admin, SOL treasury, fee).
@@ -49,12 +49,38 @@ Status: **done**. `intent.schema.json` (Draft 2020-12) + `intent.example.jsonld`
 Canonical hashing + validation implemented and tested in the SDK
 (`canonicalize`, `hashIntent`, `validateIntentPayload`).
 
-## 4. x402 USDC escrow (SPL) — outstanding
+## 4. x402 USDC escrow (SPL) — `programs/poi-escrow`
 
-Not started in this repo. Intended to reuse/extend the existing
-`@relayos/mcp-paywall` x402 primitive (commercial side) and add an SPL escrow
-program here on the public side. Bond mechanics (spec §4.3): stake → release on
-fulfilment, return on expiry, slash on false fulfilment.
+Status: **compiles** (`cargo check --workspace`). Non-custodial bond mechanics
+(spec §4.3, §3.1):
+
+- `open_bond` — broadcaster deposits USDC into a vault owned by the `Bond` PDA
+  (no human key). Records `verifier`, `responder`, `slash_sink`, `expiry`.
+- `fulfill` — the bond's `verifier` attests a valid provenance proof → vault
+  releases to the responder.
+- `slash` — `verifier` attests a false fulfillment → vault routes to the
+  `slash_sink` (burn/DAO).
+- `expire` — permissionless crank after `expiry` → vault returns to broadcaster.
+
+There is **no admin/withdraw instruction**: funds move only via these coded
+outcomes. In Phase 2 the oracle `verifier` is replaced by the ZK verifier
+program (spec §3.5) via CPI — still no human key.
+
+**Outstanding:** `anchor test` against a local validator with an SPL mint;
+optional reuse of the commercial `@relayos/mcp-paywall` x402 primitive for the
+HTTP-402 handshake on the hosted side.
+
+## 5. Open-source relay node — `packages/relay`
+
+Status: **working & tested** (6 tests). `@zeroquery/relay` validates,
+de-duplicates, TTL-expires, and forwards gossip messages with an injected
+transport. Single dependency (the SDK); runs without the company's nodes (§3.3).
+
+## 6. Intent Dust discovery — `packages/sdk/src/dust.ts`
+
+Status: **working & tested**. Encode/decode capability signals for HTTP headers,
+DNS TXT, email headers, and GitHub commit trailers (spec §5) — parasitic
+discovery, no central registry.
 
 ## Toolchain notes
 

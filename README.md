@@ -36,11 +36,17 @@ treasury is SOL SaaS revenue (§3.1).
 
 ```
 zeroquery-protocol/
-├── programs/poi-gossip/     # Anchor/Rust — Layer 1 intent broadcast + Intent Dust event
+├── programs/
+│   ├── poi-gossip/          # Anchor/Rust — L1 intent broadcast + Intent Dust event
+│   └── poi-escrow/          # Anchor/Rust — L3 non-custodial USDC intent bonds (x402)
 ├── hooks/xah-did/           # Xahau Hook (C → wasm32) — DID resolution + soulbound reputation
-├── packages/sdk/            # @zeroquery/sdk — DID derivation/resolution, intent gossip
+├── packages/
+│   ├── sdk/                 # @zeroquery/sdk — DID, intent gossip, dust, resolver
+│   └── relay/               # @zeroquery/relay — open-source gossip node
 ├── schema/                  # PoIIntent JSON-LD schema + example
-├── docs/                    # Phase 1 spec, architecture
+├── examples/                # end-to-end Phase 1 walkthrough
+├── docs/                    # Phase 1, architecture, compliance, deploy
+├── .github/workflows/ci.yml # build + test SDK/relay, hook wasm, cargo check
 ├── Cargo.toml               # Rust workspace
 ├── Anchor.toml              # Anchor config
 ├── pnpm-workspace.yaml      # JS/TS workspace
@@ -53,14 +59,18 @@ zeroquery-protocol/
 
 | Deliverable | State | Verified in-repo |
 |-------------|-------|------------------|
-| `@zeroquery/sdk` DID resolution (`did:poi:<chain>:<addr>`) | ✅ working | `pnpm --filter @zeroquery/sdk test` — 20 passing |
+| `@zeroquery/sdk` — DID resolution, intent gossip, Intent Dust | ✅ working | 27 tests passing |
+| `@zeroquery/relay` — open-source gossip node | ✅ working | 6 tests passing |
 | Intent schema + canonical hashing + gossip message | ✅ working | covered by SDK tests |
 | `xah-did` Hook (DID → soulbound reputation) | ✅ compiles to wasm32 | `pnpm hook:build` |
-| `poi-gossip` Anchor program | ✅ source complete | `anchor build` (needs Solana SBF toolchain) |
+| `poi-gossip` Anchor program (L1 broadcast) | ✅ compiles | `cargo check --workspace` |
+| `poi-escrow` Anchor program (L3 x402 USDC bonds) | ✅ compiles | `cargo check --workspace` |
+| End-to-end Phase 1 flow | ✅ runs | `pnpm example` |
 | ZK provenance circuits | ⬜ Phase 2 | — |
-| x402 USDC escrow (SPL) | ⬜ Phase 1 remaining | — |
+| Live Xahau-testnet / devnet deploy | ⬜ needs creds | runbook in `docs/DEPLOY.md` |
 
-See [`docs/PHASE1.md`](docs/PHASE1.md) for the detailed scope and what's next.
+Full mapping of constraints → code in [`docs/COMPLIANCE.md`](docs/COMPLIANCE.md);
+scope detail in [`docs/PHASE1.md`](docs/PHASE1.md).
 
 ---
 

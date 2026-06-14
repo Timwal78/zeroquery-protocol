@@ -6,10 +6,12 @@ resolution = true
 skip-lint = false
 
 [programs.localnet]
-poi_gossip = "PoiGoss1111111111111111111111111111111111"
+poi_gossip = "5ycmzEXUYMx4uRVu4hLqqNXRMzWhUu7KvMVeDfECE9o1"
+poi_escrow = "G41hFoSfYJ6ETtvxVayZtFx4oUVwWY7ctsgUB1BQBtPH"
 
 [programs.devnet]
-poi_gossip = "PoiGoss1111111111111111111111111111111111"
+poi_gossip = "5ycmzEXUYMx4uRVu4hLqqNXRMzWhUu7KvMVeDfECE9o1"
+poi_escrow = "G41hFoSfYJ6ETtvxVayZtFx4oUVwWY7ctsgUB1BQBtPH"
 
 [registry]
 url = "https://api.apr.dev"

@@ -1,0 +1,6 @@
+# Default owner for everything in this repo.
+*       @Timwal78
+
+# Fund-safety surfaces warrant extra scrutiny.
+/programs/poi-escrow/   @Timwal78
+/hooks/xah-did/         @Timwal78

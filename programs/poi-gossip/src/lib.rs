@@ -19,7 +19,8 @@
 use anchor_lang::prelude::*;
 use anchor_lang::system_program;
 
-declare_id!("PoiGoss1111111111111111111111111111111111");
+// Placeholder program ID — replace with your deploy keypair via `anchor keys sync`.
+declare_id!("5ycmzEXUYMx4uRVu4hLqqNXRMzWhUu7KvMVeDfECE9o1");
 
 /// Default broadcast micro-fee: 0.0001 SOL (spec §6.2).
 pub const DEFAULT_BROADCAST_FEE_LAMPORTS: u64 = 100_000;
