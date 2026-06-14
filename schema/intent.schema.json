@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zeroquery.dev/ns/poi/v1/intent.schema.json",
+  "title": "PoIIntent",
+  "description": "Proof-of-Intent broadcast payload (spec §4.1, §5). The full JSON-LD body travels encrypted to responders; only its hash + economic metadata gossip in the clear.",
+  "type": "object",
+  "required": ["@context", "@type", "capability", "params", "maxBond", "rail"],
+  "additionalProperties": false,
+  "properties": {
+    "@context": {
+      "const": "https://zeroquery.dev/ns/poi/v1"
+    },
+    "@type": { "const": "PoIIntent" },
+    "capability": {
+      "type": "string",
+      "description": "Dotted capability / vertical, e.g. 'travel.hotel.search'.",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "params": {
+      "type": "object",
+      "description": "Capability-specific structured parameters."
+    },
+    "maxBond": {
+      "type": "integer",
+      "description": "Maximum bond the broadcaster will stake, in the rail's smallest unit.",
+      "minimum": 1
+    },
+    "rail": {
+      "type": "string",
+      "enum": ["usdc-sol", "rlusd-xrp", "xrp", "usdc-base"],
+      "description": "Settlement rail for the escrow bond (spec §3.6 coin-stack isolation)."
+    }
+  }
+}

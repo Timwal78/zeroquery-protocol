@@ -1,0 +1,21 @@
+[package]
+name = "poi-gossip"
+version = "0.1.0"
+description = "Proof-of-Intent gossip anchor program (Layer 1 intent broadcast)"
+edition = "2021"
+license = "Apache-2.0"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "poi_gossip"
+
+[features]
+default = []
+cpi = ["no-entrypoint"]
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+idl-build = ["anchor-lang/idl-build"]
+
+[dependencies]
+anchor-lang = "0.30.1"

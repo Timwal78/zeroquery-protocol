@@ -1,0 +1,14 @@
+{
+  "@context": "https://zeroquery.dev/ns/poi/v1",
+  "@type": "PoIIntent",
+  "capability": "travel.hotel.search",
+  "params": {
+    "city": "LIS",
+    "checkIn": "2026-07-01",
+    "nights": 3,
+    "maxPriceUsd": 220,
+    "guests": 2
+  },
+  "maxBond": 500000,
+  "rail": "usdc-sol"
+}

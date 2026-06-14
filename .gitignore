@@ -1,0 +1,22 @@
+# Node / pnpm
+node_modules/
+dist/
+*.tsbuildinfo
+.turbo/
+
+# Rust / Anchor
+target/
+.anchor/
+test-ledger/
+
+# Hook build artifacts
+hooks/**/*.o
+hooks/**/*.wasm
+
+# Env / secrets — NEVER commit keys or seeds (zero-custody: no treasury keys in repo)
+.env
+.env.*
+*.pem
+id.json
+*-keypair.json
+package-lock.json

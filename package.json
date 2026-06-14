@@ -1,0 +1,14 @@
+{
+  "name": "zeroquery-protocol",
+  "version": "0.1.0",
+  "private": true,
+  "description": "ZeroQuery / Proof-of-Intent (PoI) — open protocol for AI-to-AI intent resolution with non-custodial payment rails. No token. No custody. No central registry.",
+  "license": "Apache-2.0",
+  "packageManager": "pnpm@10.33.0",
+  "scripts": {
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "hook:build": "bash hooks/xah-did/build.sh"
+  },
+  "engines": { "node": ">=18" }
+}
