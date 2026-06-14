@@ -1,0 +1,16 @@
+{
+  "name": "@zeroquery/circuits",
+  "version": "0.1.0",
+  "private": true,
+  "description": "ZeroQuery ZK provenance circuit (Groth16) + JS reference for the commitment/nullifier scheme.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "scripts": {
+    "test": "node --test reference.test.mjs",
+    "build": "bash build.sh"
+  },
+  "devDependencies": {
+    "circomlib": "^2.0.5",
+    "circomlibjs": "^0.1.7"
+  }
+}
