@@ -5,6 +5,7 @@ import {
   decodeReputation,
   repStateKey,
   REP_RECORD_BYTES,
+  XahauJsonRpcReader,
 } from "../dist/index.js";
 
 const DID = "did:poi:xah:rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh";
@@ -79,4 +80,10 @@ test("resolveDid without a reader resolves document-only", async () => {
   const res = await resolveDid("did:poi:sol:11111111111111111111111111111111");
   assert.equal(res.reputation, null);
   assert.equal(res.metadata.source, "did-only");
+});
+
+test("XahauJsonRpcReader validates the 32-byte namespace id", () => {
+  assert.throws(() => new XahauJsonRpcReader("https://xahau-test.net", "zz"));
+  const r = new XahauJsonRpcReader("https://xahau-test.net"); // default all-zero ns
+  assert.match(r.source, /^xahau-jsonrpc:/);
 });

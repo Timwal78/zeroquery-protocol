@@ -84,7 +84,7 @@ pub mod poi_escrow {
         require!(bond.state == BondState::Open as u8, EscrowError::NotOpen);
         require_keys_eq!(ctx.accounts.destination_owner.key(), bond.responder, EscrowError::WrongResponder);
 
-        payout(&ctx, intent_hash, bond.amount)?;
+        payout(&ctx, intent_hash)?;
 
         let bond = &mut ctx.accounts.bond;
         bond.state = BondState::Fulfilled as u8;
@@ -99,7 +99,7 @@ pub mod poi_escrow {
         require!(bond.state == BondState::Open as u8, EscrowError::NotOpen);
         require_keys_eq!(ctx.accounts.destination_owner.key(), bond.slash_sink, EscrowError::WrongSink);
 
-        payout(&ctx, intent_hash, bond.amount)?;
+        payout(&ctx, intent_hash)?;
 
         let bond = &mut ctx.accounts.bond;
         bond.state = BondState::Slashed as u8;
@@ -116,7 +116,8 @@ pub mod poi_escrow {
         require!(now >= bond.expiry, EscrowError::NotExpired);
         require_keys_eq!(ctx.accounts.broadcaster.key(), bond.broadcaster, EscrowError::WrongBroadcaster);
 
-        let amount = bond.amount;
+        // Drain the full vault balance (robust to stray token donations — see payout).
+        let amount = ctx.accounts.vault.amount;
         let seeds: &[&[u8]] = &[b"bond", intent_hash.as_ref(), &[bond.bump]];
         token::transfer(
             CpiContext::new_with_signer(
@@ -146,7 +147,15 @@ pub mod poi_escrow {
 }
 
 /// Shared payout for verifier-attested outcomes (fulfill / slash).
-fn payout(ctx: &Context<Resolve>, intent_hash: [u8; 32], amount: u64) -> Result<()> {
+///
+/// Transfers the vault's ENTIRE current balance, not the recorded `bond.amount`.
+/// The vault is a public SPL account, so an attacker can donate dust into it; if
+/// we only moved `bond.amount`, the residual would make the subsequent
+/// `close_account` revert and lock the bond forever (a griefing DoS). Draining
+/// the full balance keeps the close — and therefore every resolution path —
+/// always reachable.
+fn payout(ctx: &Context<Resolve>, intent_hash: [u8; 32]) -> Result<()> {
+    let amount = ctx.accounts.vault.amount;
     let bump = ctx.accounts.bond.bump;
     let seeds: &[&[u8]] = &[b"bond", intent_hash.as_ref(), &[bump]];
     token::transfer(

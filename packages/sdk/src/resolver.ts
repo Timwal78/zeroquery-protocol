@@ -151,14 +151,31 @@ export async function resolveDid(
  */
 export class XahauJsonRpcReader implements LedgerStateReader {
   readonly source: string;
-  constructor(private readonly endpoint: string) {
+  private readonly namespaceId: string;
+  /**
+   * @param endpoint     Xahau node JSON-RPC URL.
+   * @param namespaceId  32-byte hook namespace (hex) the `xah-did` hook was
+   *                     installed under. Hook state is namespaced, so this MUST
+   *                     match the `HookNamespace` from the SetHook transaction;
+   *                     defaults to the all-zero namespace.
+   */
+  constructor(private readonly endpoint: string, namespaceId: string = "00".repeat(32)) {
+    if (!/^[0-9a-fA-F]{64}$/.test(namespaceId)) {
+      throw new Error("namespaceId must be 32-byte hex (64 chars)");
+    }
+    this.namespaceId = namespaceId.toUpperCase();
     this.source = `xahau-jsonrpc:${endpoint}`;
   }
   async getHookState(account: string, key: Uint8Array): Promise<Uint8Array | null> {
     const keyHex = Buffer.from(key).toString("hex").toUpperCase();
     const body = {
       method: "ledger_entry",
-      params: [{ hook_state: { account, key: keyHex }, ledger_index: "validated" }],
+      params: [
+        {
+          hook_state: { account, key: keyHex, namespace_id: this.namespaceId },
+          ledger_index: "validated",
+        },
+      ],
     };
     const res = await fetch(this.endpoint, {
       method: "POST",
