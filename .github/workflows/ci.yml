@@ -44,6 +44,7 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
       - run: cargo check --workspace
+      - run: cargo test -p poi-subscription
 
   circuits:
     name: ZK provenance reference (JS)

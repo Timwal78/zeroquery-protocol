@@ -38,7 +38,8 @@ treasury is SOL SaaS revenue (§3.1).
 zeroquery-protocol/
 ├── programs/
 │   ├── poi-gossip/          # Anchor/Rust — L1 intent broadcast + Intent Dust event
-│   └── poi-escrow/          # Anchor/Rust — L3 non-custodial USDC intent bonds (x402)
+│   ├── poi-escrow/          # Anchor/Rust — L3 non-custodial USDC intent bonds (x402)
+│   └── poi-subscription/    # Anchor/Rust — SOL SaaS tier management (Scout/Runner/Relay/Builder)
 ├── hooks/xah-did/           # Xahau Hook (C → wasm32) — DID resolution + soulbound reputation
 ├── packages/
 │   ├── sdk/                 # @zeroquery/sdk — DID, intent gossip, dust, resolver
@@ -65,6 +66,7 @@ zeroquery-protocol/
 | `xah-did` Hook (DID → soulbound reputation) | ✅ compiles to wasm32 | `pnpm hook:build` |
 | `poi-gossip` Anchor program (L1 broadcast) | ✅ compiles | `cargo check --workspace` |
 | `poi-escrow` Anchor program (L3 x402 USDC bonds) | ✅ compiles | `cargo check --workspace` |
+| `poi-subscription` Anchor program (SOL SaaS tiers) | ✅ compiles + unit-tested | `cargo test -p poi-subscription` |
 | IntentRank matching (L2, Phase 2) | ✅ working | in the SDK suite |
 | ZK provenance scheme (Phase 2) | ✅ JS-verified | `cd circuits && npm test` |
 | ZK Groth16 circuit + setup | ⏳ needs circom/snarkjs | `circuits/build.sh` |
