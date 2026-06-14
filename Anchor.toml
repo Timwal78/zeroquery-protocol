@@ -8,10 +8,12 @@ skip-lint = false
 [programs.localnet]
 poi_gossip = "5ycmzEXUYMx4uRVu4hLqqNXRMzWhUu7KvMVeDfECE9o1"
 poi_escrow = "G41hFoSfYJ6ETtvxVayZtFx4oUVwWY7ctsgUB1BQBtPH"
+poi_verifier = "Verif1er11111111111111111111111111111111111"
 
 [programs.devnet]
 poi_gossip = "5ycmzEXUYMx4uRVu4hLqqNXRMzWhUu7KvMVeDfECE9o1"
 poi_escrow = "G41hFoSfYJ6ETtvxVayZtFx4oUVwWY7ctsgUB1BQBtPH"
+poi_verifier = "Verif1er11111111111111111111111111111111111"
 
 [registry]
 url = "https://api.apr.dev"
