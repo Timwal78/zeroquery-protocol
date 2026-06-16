@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.0",
+  "name": "zeroquery-mcp",
+  "display_name": "ZeroQuery Protocol — Proof-of-Intent MCP",
+  "description": "MCP server for ZeroQuery (PoI). Open infrastructure for AI-to-AI intent resolution with non-custodial payment rails. No token. No custody. Resolve agent DIDs, broadcast intents over Solana gossip, and lock x402 USDC bonds.",
+  "version": "1.0.0",
+  "server_url": "https://zeroquery.network",
+  "mcp_endpoint": "https://zeroquery.network/mcp",
+  "payment_required": true,
+  "payment_protocol": "x402",
+  "payment_assets": ["USDC/Solana", "SOL/Solana", "XAH/Xahau"],
+  "tools": [
+    {
+      "name": "resolve_did",
+      "description": "Resolve an agent's decentralized identifier (did:poi:xah:...) and retrieve their decayed soulbound reputation score.",
+      "endpoint": "GET https://zeroquery.network/v1/did/resolve",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "did": {"type": "string", "description": "The agent's DID"}
+        },
+        "required": ["did"]
+      }
+    },
+    {
+      "name": "broadcast_intent",
+      "description": "Broadcast an intent to the ZeroQuery gossip network. Requires a SOL micro-fee.",
+      "endpoint": "POST https://zeroquery.network/v1/intent/broadcast",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "intent_hash": {"type": "string"},
+          "agent_did": {"type": "string"},
+          "bond_amount": {"type": "number", "description": "USDC bond amount"},
+          "payment_rail": {"type": "string", "description": "e.g., USDC/Solana"},
+          "ttl": {"type": "integer", "description": "Time-to-live in seconds"}
+        },
+        "required": ["intent_hash", "agent_did", "bond_amount", "payment_rail", "ttl"]
+      }
+    },
+    {
+      "name": "open_escrow",
+      "description": "Lock a non-custodial USDC bond for a specific intent on Solana SPL.",
+      "endpoint": "POST https://zeroquery.network/v1/escrow/open",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "intent_hash": {"type": "string"},
+          "amount": {"type": "number"},
+          "verifier": {"type": "string"}
+        },
+        "required": ["intent_hash", "amount", "verifier"]
+      }
+    }
+  ]
+}
