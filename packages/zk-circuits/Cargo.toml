@@ -1,0 +1,7 @@
+# Separate Cargo workspace for ZK circuits.
+# sp1-sdk requires zeroize ^1.7 while anchor-lang requires zeroize <1.4.
+# These two ecosystems are incompatible in a single workspace, so the ZK
+# circuits live in their own workspace and are checked by a separate CI job.
+[workspace]
+members = ["program", "script"]
+resolver = "2"

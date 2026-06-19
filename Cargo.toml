@@ -1,6 +1,7 @@
 # Cargo workspace for the ZeroQuery / Proof-of-Intent Solana programs.
 [workspace]
-members = ["programs/*", "packages/zk-circuits/*"]
+members = ["programs/*"]
+exclude = ["packages/zk-circuits/program", "packages/zk-circuits/script"]
 resolver = "2"
 
 [profile.release]
