@@ -13,11 +13,11 @@ jobs:
     name: SDK + relay (build & test)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
       # Version is inferred from the root package.json "packageManager" field;
       # do not also set `version:` here or action-setup errors on the conflict.
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 20
           cache: pnpm
@@ -29,7 +29,7 @@ jobs:
     name: xah-did hook (wasm32 compile)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
       - name: Install clang + lld
         run: sudo apt-get update && sudo apt-get install -y clang lld
       - run: bash hooks/xah-did/build.sh
@@ -40,18 +40,40 @@ jobs:
     name: Anchor programs (cargo check)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@stable
-      - uses: Swatinem/rust-cache@v2
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: dtolnay/rust-toolchain@29eef336d9b2848a0b548edc03f92a220660cdb8 # stable
+      - uses: Swatinem/rust-cache@e18b497796c12c097a38f9edb9d0641fb99eee32 # v2
+        with:
+          workspaces: ". -> target"
       - run: cargo check --workspace
       - run: cargo test -p poi-subscription
+
+  zk-circuits:
+    name: ZK circuits (manifest validation)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: dtolnay/rust-toolchain@29eef336d9b2848a0b548edc03f92a220660cdb8 # stable
+      # sp1-sdk 3.4.0 is incompatible with every current stable Rust toolchain:
+      #   Rust <1.82: E0283 type-inference errors in sp1-core-machine
+      #   Rust <1.85: transitive dep cpufeatures 0.3.0 requires edition2024
+      # Full compilation requires a pinned Cargo.lock generated with the sp1
+      # custom toolchain. Use cargo read-manifest to validate the TOML
+      # structure without resolving or downloading any dependencies.
+      - name: Validate workspace manifests
+        run: |
+          # packages/zk-circuits/Cargo.toml is a virtual workspace manifest
+          # (no [package] section); cargo read-manifest requires a package
+          # manifest, so validate the two member packages only.
+          cargo read-manifest --manifest-path packages/zk-circuits/program/Cargo.toml
+          cargo read-manifest --manifest-path packages/zk-circuits/script/Cargo.toml
 
   circuits:
     name: ZK provenance reference (JS)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 20
       - run: cd circuits && npm install
