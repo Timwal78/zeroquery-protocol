@@ -7,4 +7,6 @@ export * from "./did.js";
 export * from "./intent.js";
 export * from "./resolver.js";
 export * from "./dust.js";
+export * from "./verifier.js";
+export * from "./rank.js";
 export * from "./intentrank.js";
