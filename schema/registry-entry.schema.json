@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zeroquery.dev/ns/poi/v1/registry-entry.schema.json",
+  "title": "PoIRegistryEntry",
+  "description": "An entry in the ZeroQuery intent registry. Wraps a PoIIntent with anchoring metadata: server timestamp, XRPL memo hash, and filer identity. Forms the immutable audit record.",
+  "type": "object",
+  "required": ["@context", "@type", "registryEntryId", "intentId", "filerAddress", "receivedAt", "intentHash", "intent"],
+  "additionalProperties": false,
+  "properties": {
+    "@context": { "const": "https://zeroquery.dev/ns/poi/v1" },
+    "@type":    { "const": "PoIRegistryEntry" },
+    "registryEntryId": {
+      "type": "string",
+      "description": "UUID v4 assigned by the registry at ingestion time.",
+      "format": "uuid"
+    },
+    "intentId": {
+      "type": "string",
+      "description": "Mirrors the id field from the wrapped PoIIntent.",
+      "format": "uri"
+    },
+    "filerAddress": {
+      "type": "string",
+      "description": "XRPL r-address that submitted this intent. Used for breach lookup and credit bureau correlation."
+    },
+    "receivedAt": {
+      "type": "integer",
+      "description": "Unix timestamp (seconds) when the registry received and stored this entry.",
+      "minimum": 0
+    },
+    "intentHash": {
+      "type": "string",
+      "description": "SHA-256 hex digest of the canonical JSON of the PoIIntent (before registry wrapping). Immutable content fingerprint."
+    },
+    "xrplAnchor": {
+      "type": "object",
+      "description": "Optional: XRPL transaction that carries this intent hash as a Memo field. Provides court-admissible on-chain timestamp.",
+      "properties": {
+        "txHash":    { "type": "string", "description": "XRPL transaction hash (64 hex chars)." },
+        "ledgerIndex": { "type": "integer" },
+        "closeTime": { "type": "integer", "description": "Ledger close time (unix seconds)." },
+        "account":   { "type": "string", "description": "Submitting XRPL account." }
+      },
+      "additionalProperties": false
+    },
+    "status": {
+      "type": "string",
+      "enum": ["active", "fulfilled", "breached", "expired", "withdrawn"],
+      "description": "Lifecycle status of this intent. Updated by breach detection or fulfilment confirmation.",
+      "default": "active"
+    },
+    "resolvedAt": {
+      "type": "integer",
+      "description": "Unix timestamp when status moved from active to a terminal state."
+    },
+    "breachId": {
+      "type": "string",
+      "description": "registryEntryId of the PoIBreach record, if status == breached."
+    },
+    "intent": {
+      "$ref": "https://zeroquery.dev/ns/poi/v1/intent.schema.json",
+      "description": "The full PoIIntent payload, stored verbatim."
+    }
+  }
+}
