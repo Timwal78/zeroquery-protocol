@@ -16,6 +16,8 @@
 //! NOTE: build with the Anchor/Solana SBF toolchain (`anchor build`). The pinned
 //! versions are in Cargo.toml.
 
+#![deny(unused_must_use)]
+
 use anchor_lang::prelude::*;
 use anchor_lang::system_program;
 
@@ -49,7 +51,12 @@ pub mod poi_gossip {
         Ok(())
     }
 
-    /// Admin-only: update the treasury or fee.
+    /// Admin-only: update the protocol treasury address or the broadcast fee.
+    ///
+    /// Either field is optional — pass `None` to leave it unchanged.
+    /// Only the `admin` key recorded in `Config` at `initialize` time may call
+    /// this instruction (enforced by the `has_one = admin` constraint on
+    /// [`SetParams`]).
     pub fn set_params(
         ctx: Context<SetParams>,
         new_treasury: Option<Pubkey>,

@@ -1,3 +1,5 @@
+#![deny(unused_must_use)]
+
 use anchor_lang::prelude::*;
 use poi_escrow::cpi::accounts::Resolve;
 use poi_escrow::program::PoiEscrow;
@@ -10,7 +12,12 @@ declare_id!("Verif1er11111111111111111111111111111111111");
 pub mod poi_verifier {
     use super::*;
 
-    /// Initialize the global verifier configuration with the ZK prover Image ID.
+    /// One-time initialization: record the ZK prover Image ID and the admin key.
+    ///
+    /// `image_id` is the 32-byte SP1 guest program image ID committed at compile
+    /// time.  `submit_proof` will verify incoming proofs against this value in
+    /// Phase 2 (currently a scaffold stub).  Only `admin` can update this via a
+    /// future `set_image_id` instruction.
     pub fn initialize(ctx: Context<Initialize>, image_id: [u8; 32]) -> Result<()> {
         let config = &mut ctx.accounts.config;
         config.admin = ctx.accounts.admin.key();
@@ -18,18 +25,33 @@ pub mod poi_verifier {
         Ok(())
     }
 
-    /// Submit a ZK proof to be verified. On success, it invokes `poi-escrow` to fulfill or slash.
+    /// Submit a ZK proof for on-chain verification; on success CPI-calls `poi-escrow`
+    /// to fulfill or slash the associated bond.
+    ///
+    /// # Arguments
+    /// * `intent_hash` — 32-byte SHA-256 hash of the canonical intent payload.
+    /// * `proof_hash`  — 32-byte commitment to the ZK proof (written into the bond record).
+    /// * `outcome`     — 1 = fulfill (release bond to responder), 3 = slash (penalise).
+    /// * `proof_data`  — Serialised SP1 Groth16/Plonk proof bytes.
+    ///
+    /// # Phase 2 note
+    /// The real implementation must invoke the SP1 Groth16/Plonk on-chain verifier
+    /// against `config.image_id` instead of the non-empty-bytes stub below.
+    /// Until that CPI is wired, any non-empty `proof_data` is accepted — this is
+    /// intentional scaffolding and MUST NOT be deployed to mainnet as-is.
     pub fn submit_proof(
         ctx: Context<SubmitProof>,
         intent_hash: [u8; 32],
         proof_hash: [u8; 32],
         outcome: u8, // 1 = fulfill, 3 = slash
-        _proof_data: Vec<u8>, // The actual SP1 SNARK proof data
+        proof_data: Vec<u8>, // The actual SP1 SNARK proof data
     ) -> Result<()> {
         // Step 1: Verify the ZK proof against the stored `config.image_id`.
-        // (In a full SP1 integration, we would invoke the SP1 Groth16/Plonk verifier program here).
-        // For Phase 2 scaffolding, we mock the success if proof_data is non-empty.
-        require!(!_proof_data.is_empty(), VerifierError::InvalidProof);
+        //
+        // PHASE 2 SCAFFOLD: a non-empty byte string stands in for a real SP1
+        // Groth16/Plonk verification CPI against `ctx.accounts.config.image_id`.
+        // Replace this block with the actual verifier CPI before mainnet deployment.
+        require!(!proof_data.is_empty(), VerifierError::InvalidProof);
 
         // Step 2: Sign the CPI using the verifier PDA.
         let bump = ctx.bumps.verifier_authority;

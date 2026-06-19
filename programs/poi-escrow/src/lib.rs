@@ -14,10 +14,22 @@
 //!     the verifier is an oracle/attestation key; in Phase 2 it is replaced by
 //!     the ZK provenance verifier program (spec §3.5) via CPI — still no human.
 //!
+//! COIN ISOLATION (spec §3.6):
+//!   The escrow only accepts the single `mint` the broadcaster passes at bond
+//!   creation. The vault is seeded with `intent_hash` AND the mint address so
+//!   it is impossible for the vault to receive tokens of a different mint than
+//!   the one locked at open time. All resolution paths (`fulfill`, `slash`,
+//!   `expire`) validate `bond.mint == mint` via the `has_one` constraint before
+//!   any transfer executes. The program therefore NEVER holds SPL tokens from
+//!   more than one mint per bond, and mixing mints across bonds is structurally
+//!   impossible.
+//!
 //! Outcomes:
 //!   fulfill  -> vault → responder   (verifier attests a valid provenance proof)
 //!   expire   -> vault → broadcaster (anyone may crank once `expiry` passes)
 //!   slash    -> vault → slash_sink  (verifier attests a false fulfillment)
+
+#![deny(unused_must_use)]
 
 use anchor_lang::prelude::*;
 use anchor_spl::token::{self, CloseAccount, Mint, Token, TokenAccount, Transfer};

@@ -183,11 +183,16 @@ export class XahauJsonRpcReader implements LedgerStateReader {
       body: JSON.stringify(body),
     });
     if (!res.ok) throw new Error(`xahau node ${res.status}`);
-    const json: any = await res.json();
-    const node = json?.result?.node;
-    if (!node || json?.result?.error) return null;
-    const dataHex: string | undefined = node.HookStateData;
-    if (!dataHex) return null;
+    const json: unknown = await res.json();
+    if (typeof json !== "object" || json === null) return null;
+    const result = (json as Record<string, unknown>)["result"];
+    if (typeof result !== "object" || result === null) return null;
+    const resultObj = result as Record<string, unknown>;
+    if (resultObj["error"]) return null;
+    const node = resultObj["node"];
+    if (typeof node !== "object" || node === null) return null;
+    const dataHex = (node as Record<string, unknown>)["HookStateData"];
+    if (typeof dataHex !== "string") return null;
     return new Uint8Array(Buffer.from(dataHex, "hex"));
   }
 }
