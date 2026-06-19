@@ -10,7 +10,7 @@
  * this package has a single dependency — the protocol SDK — and no network or
  * proprietary code.
  */
-import { isExpired, isValidDid, type GossipMessage } from "@zeroquery/sdk";
+import { isExpired, isValidDid, calculateIntentRank, resolveDid, type GossipMessage, type LedgerStateReader } from "@zeroquery/sdk";
 
 export interface Peer {
   id: string;
@@ -110,6 +110,30 @@ export class RelayNode {
   /** Live intents whose rail matches, useful for responder filtering. */
   byRail(rail: GossipMessage["paymentRail"], now = this.now()): GossipMessage[] {
     return this.active(now).filter((m) => m.paymentRail === rail);
+  }
+
+  /**
+   * Evaluates all live intents, fetches their broadcaster's reputation, 
+   * and returns a ranked list from highest trust (100) to lowest (0).
+   * Caches DID resolution per-call to avoid hammering the resolver for duplicates.
+   */
+  async rankActiveIntents(reader: LedgerStateReader, now = this.now()): Promise<Array<GossipMessage & { rank: number }>> {
+    const live = this.active(now);
+    const didCache = new Map<string, number>();
+    
+    const ranked = await Promise.all(
+      live.map(async (msg) => {
+        let rank = didCache.get(msg.agentDid);
+        if (rank === undefined) {
+          const { reputation } = await resolveDid(msg.agentDid, reader, now);
+          rank = calculateIntentRank(reputation, now);
+          didCache.set(msg.agentDid, rank);
+        }
+        return { ...msg, rank };
+      })
+    );
+    
+    return ranked.sort((a, b) => b.rank - a.rank);
   }
 
   /** Drop intents whose ttl has elapsed. Returns count evicted. */

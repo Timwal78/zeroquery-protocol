@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZeroQuery | The Trustless Intent Protocol</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #050505;
+            --surface-color: #1a1a1a;
+            --neon-green: #00FF41;
+            --hot-pink: #FF007F;
+            --neon-yellow: #FFD700;
+            --text-main: #FFFFFF;
+            --text-muted: #A0A0A0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 6rem 0 4rem 0;
+        }
+
+        .hero h1 {
+            font-size: 5rem;
+            font-weight: 800;
+            color: var(--neon-green);
+            letter-spacing: -2px;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+        }
+
+        .hero h2 {
+            font-size: 1.5rem;
+            color: var(--neon-yellow);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        .hero p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* Separator */
+        .divider {
+            width: 100vw;
+            height: 2px;
+            background-color: var(--neon-green);
+            margin-left: calc(-50vw + 50%);
+            margin-bottom: 3rem;
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+        }
+
+        /* Breadcrumbs */
+        .breadcrumbs {
+            font-size: 0.9rem;
+            margin-bottom: 3rem;
+        }
+        
+        .breadcrumbs .active { color: var(--neon-green); }
+        .breadcrumbs .inactive { color: var(--text-muted); }
+
+        /* Sections */
+        section {
+            margin-bottom: 5rem;
+        }
+
+        h3.section-title {
+            font-size: 2.5rem;
+            color: var(--neon-green);
+            margin-bottom: 2rem;
+            padding-left: 1rem;
+            border-left: 6px solid var(--hot-pink);
+            line-height: 1.1;
+        }
+
+        /* Cards / Callouts */
+        .callout {
+            background-color: var(--surface-color);
+            padding: 2rem;
+            border-left: 6px solid var(--hot-pink);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .callout strong {
+            display: block;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        /* Lists */
+        h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+        }
+
+        ul {
+            list-style-type: disc;
+            margin-left: 1.5rem;
+            color: var(--text-main);
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+            font-size: 1.05rem;
+        }
+
+        /* Buttons */
+        .cta-group {
+            margin-top: 3rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            font-weight: 700;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--neon-green);
+            color: #000;
+            border: 2px solid var(--neon-green);
+        }
+
+        .btn-primary:hover {
+            background-color: transparent;
+            color: var(--neon-green);
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.4);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--hot-pink);
+            border: 2px solid var(--hot-pink);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--hot-pink);
+            color: #fff;
+            box-shadow: 0 0 15px rgba(255, 0, 127, 0.4);
+        }
+
+        /* Code Block */
+        .code-block {
+            background: #000;
+            border: 1px solid #333;
+            padding: 1.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--neon-green);
+            overflow-x: auto;
+            margin-top: 2rem;
+        }
+        
+        .code-block .comment { color: #555; }
+        .code-block .pink { color: var(--hot-pink); }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>ZEROQUERY</h1>
+        <h2>"Stop Trusting. Start Proving."</h2>
+        <p>The Trustless Intent Protocol for Autonomous Agents</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="container">
+        <div class="breadcrumbs">
+            <span class="active">Home</span> / <span class="active">Stack</span> / <span class="inactive">ZEROQUERY</span>
+        </div>
+
+        <section>
+            <h3 class="section-title">The Problem</h3>
+            
+            <div class="callout">
+                <strong>You gave your AI agent a live wallet. Now it's drained.</strong>
+                <p>Today's autonomous AI systems execute trades and intents on-chain with blind trust. Agents are ephemeral bursts of computation, yet they hold persistent liquidity or rely on trusted Web2 APIs. The infrastructure hasn't caught up.</p>
+            </div>
+
+            <h4>Why this matters:</h4>
+            <ul>
+                <li>Relying on off-chain execution agents requires trusting them with funds.</li>
+                <li>API data provided by agents can be trivially spoofed.</li>
+                <li>There is no cryptographic proof linking an agent's off-chain action to an on-chain settlement.</li>
+                <li>A rogue agent or exploited API key compromises the entire liquidity pool.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h3 class="section-title">The Solution</h3>
+            
+            <div class="callout">
+                <strong>ZeroQuery: Cryptographic provenance for AI intents.</strong>
+                <p>ZeroQuery acts as an off-chain gossip relay paired with an on-chain Zero-Knowledge verifier. Instead of trusting an agent to execute correctly, you escrow your funds and force them to prove it.</p>
+            </div>
+
+            <h4>How it works:</h4>
+            <ul>
+                <li><strong>Gossip Network:</strong> Broadcast your intent (e.g., "Buy SOL if Price < $150") to the decentralized ZeroQuery Relay.</li>
+                <li><strong>IntentRank:</strong> The network mathematically ranks agents based on their cross-chain DID reputation on the Xahau ledger.</li>
+                <li><strong>Layer 5 ZK-SNARKs:</strong> The winning agent executes the API call inside a Succinct SP1 zkVM, generating a cryptographic proof of the execution.</li>
+                <li><strong>Trustless Settlement:</strong> The agent submits the proof to the Solana <code>poi-verifier</code> smart contract. If valid, the Escrow releases the bounty.</li>
+            </ul>
+
+            <div class="code-block">
+<span class="comment">// 1. Build your cryptographic intent</span>
+import { buildGossipMessage } from "@zeroquery/sdk";
+
+const intent = {
+  "@context": "https://zeroquery.dev/ns/poi/v1",
+  "capability": "api.coingecko.com/solana/price",
+  "params": { operator: "<", targetValue: "150.00" },
+  "maxBond": 50000000,
+  "rail": "usdc-sol"
+};
+
+<span class="comment">// 2. Broadcast to the spectral execution layer</span>
+await fetch("https://relay.zeroquery.dev/ingest", {
+  method: "POST",
+  body: JSON.stringify(<span class="pink">buildGossipMessage</span>(intent, myDid))
+});
+            </div>
+
+            <div class="cta-group">
+                <a href="https://github.com/TIMWAL78/zeroquery-protocol" class="btn btn-primary">View GitHub Repo</a>
+                <a href="INTEGRATION_GUIDE.md" class="btn btn-outline">Read The Docs</a>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
