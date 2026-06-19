@@ -1552,6 +1552,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "poi-subscription"
+version = "0.1.0"
+dependencies = [
+ "anchor-lang",
+]
+
+[[package]]
 name = "poi-verifier"
 version = "0.1.0"
 dependencies = [
