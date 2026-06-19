@@ -34,6 +34,16 @@ importers:
         specifier: ^5.4.5
         version: 5.9.3
 
+  packages/intent-registry:
+    dependencies:
+      '@zeroquery/sdk':
+        specifier: workspace:*
+        version: link:../sdk
+    devDependencies:
+      typescript:
+        specifier: ^5.4.5
+        version: 5.9.3
+
   packages/relay:
     dependencies:
       '@zeroquery/sdk':
