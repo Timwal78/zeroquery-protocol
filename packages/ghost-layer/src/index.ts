@@ -7,7 +7,7 @@ async function main() {
 
   // In production, the bot listens to an SSE stream from the network relay.
   // For the devnet demo, we attach directly to a local RelayNode.
-  const relay = new RelayNode({ peerId: "ghost-bot-1" });
+  const relay = new RelayNode();
   const reader = new XahauJsonRpcReader("https://xahau.network");
 
   console.log("👻 Waiting for intents from garner clients...");

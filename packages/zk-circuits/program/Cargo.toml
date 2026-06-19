@@ -4,7 +4,7 @@ name = "poi-circuit"
 edition = "2021"
 
 [dependencies]
-sp1-zkvm = "3.0.0"
+sp1-zkvm = "3.4.0"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = { version = "1.0", default-features = false, features = ["alloc"] }
 ed25519-dalek = { version = "2.1.0", default-features = false }
