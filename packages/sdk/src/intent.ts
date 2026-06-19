@@ -47,6 +47,13 @@ export const INTENT_CONTEXT =
   "https://zeroquery.dev/ns/poi/v1";
 
 /**
+ * Maximum serialized byte size of an intent payload (spec §4.1 — the gossip
+ * wire message must stay compact to bound relay memory and network cost).
+ * Payloads exceeding this limit are rejected by `validateIntentPayload`.
+ */
+export const MAX_INTENT_PAYLOAD_BYTES = 65_536; // 64 KiB
+
+/**
  * Deterministic JSON canonicalization (sorted keys, no insignificant
  * whitespace). Good enough for a stable hash without pulling in a full
  * RFC-8785 JCS dependency; kept here so the hash is reproducible across SDKs.
@@ -108,6 +115,17 @@ export function buildGossipMessage(args: BuildGossipArgs): GossipMessage {
 /** Returns a list of human-readable validation errors ([] === valid). */
 export function validateIntentPayload(payload: IntentPayload): string[] {
   const errors: string[] = [];
+
+  // Guard against DoS via oversized payloads before any field inspection.
+  // The limit (MAX_INTENT_PAYLOAD_BYTES) is chosen to keep relay memory
+  // bounded while accommodating realistic intent parameter objects.
+  const serialized = JSON.stringify(payload);
+  if (typeof serialized === "string" && Buffer.byteLength(serialized, "utf8") > MAX_INTENT_PAYLOAD_BYTES) {
+    errors.push(`payload exceeds maximum size of ${MAX_INTENT_PAYLOAD_BYTES} bytes`);
+    // Return early — further validation is meaningless for an oversize payload.
+    return errors;
+  }
+
   if (payload?.["@context"] !== INTENT_CONTEXT) {
     errors.push(`@context must be "${INTENT_CONTEXT}"`);
   }

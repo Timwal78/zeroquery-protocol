@@ -10,7 +10,7 @@
  * this package has a single dependency — the protocol SDK — and no network or
  * proprietary code.
  */
-import { isExpired, isValidDid, calculateIntentRank, resolveDid, type GossipMessage, type LedgerStateReader } from "@zeroquery/sdk";
+import { isExpired, isValidDid, calculateIntentRank, resolveDid, PAYMENT_RAILS, type GossipMessage, type LedgerStateReader } from "@zeroquery/sdk";
 
 export interface Peer {
   id: string;
@@ -168,7 +168,10 @@ export class RelayNode {
       msg.bondAmount > 0 &&
       Number.isInteger(msg.timestamp) &&
       Number.isInteger(msg.ttl) &&
-      msg.ttl > 0
+      msg.ttl > 0 &&
+      // Validate that paymentRail is one of the spec-defined rails (spec §3.6).
+      // An unrecognized rail value indicates a malformed or spoofed message.
+      (PAYMENT_RAILS as readonly string[]).includes(msg.paymentRail)
     );
   }
 }

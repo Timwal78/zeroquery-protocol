@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zeroquery.dev/ns/poi/v1/breach.schema.json",
+  "title": "PoIBreach",
+  "description": "Proof-of-Breach declaration (spec §8). Filed when an agent's actual action deviates materially from a registered PoIIntent. Court-admissible when anchored to a registryEntryId with a valid XRPL timestamp.",
+  "type": "object",
+  "required": ["@context", "@type", "intentId", "registryEntryId", "filedBy", "filedAt", "deviation", "evidence"],
+  "additionalProperties": false,
+  "properties": {
+    "@context": { "const": "https://zeroquery.dev/ns/poi/v1" },
+    "@type":    { "const": "PoIBreach" },
+    "intentId": {
+      "type": "string",
+      "description": "The id of the original PoIIntent that was breached.",
+      "format": "uri",
+      "minLength": 1
+    },
+    "registryEntryId": {
+      "type": "string",
+      "description": "The registry entry id from the intent registry (contains XRPL anchor txHash).",
+      "minLength": 1
+    },
+    "filedBy": {
+      "type": "string",
+      "description": "XRPL r-address or DID of the party filing the breach claim.",
+      "minLength": 1
+    },
+    "filedAt": {
+      "type": "integer",
+      "description": "Unix timestamp (seconds) when this breach was filed.",
+      "minimum": 0
+    },
+    "deviation": {
+      "type": "object",
+      "description": "Structured comparison of declared vs actual values.",
+      "required": ["type", "declared", "actual"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["capability_mismatch", "param_deviation", "bond_violation", "rail_switch", "undeclared_action", "timeout"],
+          "description": "Category of breach."
+        },
+        "declared": {
+          "description": "The declared value from the original PoIIntent."
+        },
+        "actual": {
+          "description": "The observed value from the on-chain or API record."
+        },
+        "deviationMagnitude": {
+          "type": "number",
+          "description": "For numeric deviations: |actual - declared| / declared (0–1 = percentage deviation)."
+        }
+      },
+      "additionalProperties": false
+    },
+    "evidence": {
+      "type": "array",
+      "description": "Chain of evidence supporting the breach claim.",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["type", "ref"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["xrpl_tx", "api_log", "mcp_call", "on_chain_record", "signed_attestation"]
+          },
+          "ref": {
+            "type": "string",
+            "description": "XRPL tx hash, URL, or content-addressed hash of the evidence artifact."
+          },
+          "description": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "remedy": {
+      "type": "object",
+      "description": "Optional requested remedy.",
+      "properties": {
+        "type": { "type": "string", "enum": ["bond_slash", "rlusd_penalty", "service_suspension", "arbitration"] },
+        "amountRLUSD": { "type": "number", "minimum": 0 },
+        "narrative": { "type": "string", "maxLength": 1024 }
+      },
+      "additionalProperties": false
+    },
+    "signature": {
+      "type": "string",
+      "description": "Ed25519 signature over the canonical JSON of this document (excluding this field), base64url-encoded."
+    }
+  }
+}
