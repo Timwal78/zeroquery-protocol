@@ -13,11 +13,11 @@ jobs:
     name: SDK + relay (build & test)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
       # Version is inferred from the root package.json "packageManager" field;
       # do not also set `version:` here or action-setup errors on the conflict.
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: pnpm/action-setup@7088e561eb65bb68695d245aa206f005ef30921d # v4
+      - uses: actions/setup-node@cdca7d6dd16c72fb5d9c5b2d47aaddfca8fd94e2 # v4
         with:
           node-version: 20
           cache: pnpm
@@ -29,7 +29,7 @@ jobs:
     name: xah-did hook (wasm32 compile)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
       - name: Install clang + lld
         run: sudo apt-get update && sudo apt-get install -y clang lld
       - run: bash hooks/xah-did/build.sh
@@ -40,9 +40,9 @@ jobs:
     name: Anchor programs (cargo check)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@stable
-      - uses: Swatinem/rust-cache@v2
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: dtolnay/rust-toolchain@29eef336d9b2848a0b548edc03f92a220660cdb8 # stable
+      - uses: Swatinem/rust-cache@aa7c1c80a07a27a84c0aa76d0cef0aad3830e330 # v2
         with:
           workspaces: ". -> target"
       - run: cargo check --workspace
@@ -51,8 +51,8 @@ jobs:
     name: ZK circuits (manifest validation)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: dtolnay/rust-toolchain@29eef336d9b2848a0b548edc03f92a220660cdb8 # stable
       # sp1-sdk 3.4.0 is incompatible with every current stable Rust toolchain:
       #   Rust <1.82: E0283 type-inference errors in sp1-core-machine
       #   Rust <1.85: transitive dep cpufeatures 0.3.0 requires edition2024
