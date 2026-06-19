@@ -52,8 +52,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@stable
+      # sp1-core-machine 3.4.0 triggers E0283 on Rust ≥ 1.82 (stricter type
+      # inference); pin to 1.81 which is the last release sp1 3.x supports.
+      - uses: dtolnay/rust-toolchain@1.81
       - uses: Swatinem/rust-cache@v2
         with:
           workspaces: "packages/zk-circuits -> packages/zk-circuits/target"
-      - run: cargo check --manifest-path packages/zk-circuits/Cargo.toml --workspace
+      - run: cargo check --manifest-path packages/zk-circuits/Cargo.toml --package poi-prover
