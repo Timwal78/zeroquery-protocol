@@ -96,7 +96,7 @@ export class IntentRegistry {
     if (entry.xrplAnchor) {
       throw new Error("Anchor already set — entries are immutable after anchoring");
     }
-    (entry as Record<string, unknown>)["xrplAnchor"] = anchor;
+    (entry as unknown as { xrplAnchor: XrplAnchor }).xrplAnchor = anchor;
     this._audit(registryEntryId, "anchor_set", { txHash: anchor.txHash, closeTime: anchor.closeTime });
   }
 

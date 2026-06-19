@@ -6,8 +6,7 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 
-// Import from src directly since we may not have built dist yet
-import { IntentRegistry } from "../src/registry.js";
+import { IntentRegistry } from "../dist/index.js";
 
 const FILER = "rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh";
 
