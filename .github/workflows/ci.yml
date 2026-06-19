@@ -61,6 +61,8 @@ jobs:
       # structure without resolving or downloading any dependencies.
       - name: Validate workspace manifests
         run: |
-          cargo read-manifest --manifest-path packages/zk-circuits/Cargo.toml
+          # packages/zk-circuits/Cargo.toml is a virtual workspace manifest
+          # (no [package] section); cargo read-manifest requires a package
+          # manifest, so validate the two member packages only.
           cargo read-manifest --manifest-path packages/zk-circuits/program/Cargo.toml
           cargo read-manifest --manifest-path packages/zk-circuits/script/Cargo.toml
