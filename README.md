@@ -38,7 +38,8 @@ treasury is SOL SaaS revenue (§3.1).
 zeroquery-protocol/
 ├── programs/
 │   ├── poi-gossip/          # Anchor/Rust — L1 intent broadcast + Intent Dust event
-│   └── poi-escrow/          # Anchor/Rust — L3 non-custodial USDC intent bonds (x402)
+│   ├── poi-escrow/          # Anchor/Rust — L3 non-custodial USDC intent bonds (x402)
+│   └── poi-subscription/    # Anchor/Rust — SOL SaaS tier management (Scout/Runner/Relay/Builder)
 ├── hooks/xah-did/           # Xahau Hook (C → wasm32) — DID resolution + soulbound reputation
 ├── packages/
 │   ├── sdk/                 # @zeroquery/sdk — DID, intent gossip, dust, resolver
@@ -59,18 +60,22 @@ zeroquery-protocol/
 
 | Deliverable | State | Verified in-repo |
 |-------------|-------|------------------|
-| `@zeroquery/sdk` — DID resolution, intent gossip, Intent Dust | ✅ working | 27 tests passing |
+| `@zeroquery/sdk` — DID, intent gossip, Intent Dust, IntentRank | ✅ working | 35 tests passing |
 | `@zeroquery/relay` — open-source gossip node | ✅ working | 6 tests passing |
 | Intent schema + canonical hashing + gossip message | ✅ working | covered by SDK tests |
 | `xah-did` Hook (DID → soulbound reputation) | ✅ compiles to wasm32 | `pnpm hook:build` |
 | `poi-gossip` Anchor program (L1 broadcast) | ✅ compiles | `cargo check --workspace` |
 | `poi-escrow` Anchor program (L3 x402 USDC bonds) | ✅ compiles | `cargo check --workspace` |
+| `poi-subscription` Anchor program (SOL SaaS tiers) | ✅ compiles + unit-tested | `cargo test -p poi-subscription` |
+| IntentRank matching (L2, Phase 2) | ✅ working | in the SDK suite |
+| ZK provenance scheme (Phase 2) | ✅ JS-verified | `cd circuits && npm test` |
+| ZK Groth16 circuit + setup | ⏳ needs circom/snarkjs | `circuits/build.sh` |
 | End-to-end Phase 1 flow | ✅ runs | `pnpm example` |
-| ZK provenance circuits | ⬜ Phase 2 | — |
 | Live Xahau-testnet / devnet deploy | ⬜ needs creds | runbook in `docs/DEPLOY.md` |
 
-Full mapping of constraints → code in [`docs/COMPLIANCE.md`](docs/COMPLIANCE.md);
-scope detail in [`docs/PHASE1.md`](docs/PHASE1.md).
+Constraints → code in [`docs/COMPLIANCE.md`](docs/COMPLIANCE.md); scope in
+[`docs/PHASE1.md`](docs/PHASE1.md) and [`docs/PHASE2.md`](docs/PHASE2.md);
+self-review in [`docs/AUDIT.md`](docs/AUDIT.md).
 
 ---
 
