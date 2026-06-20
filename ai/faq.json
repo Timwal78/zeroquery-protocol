@@ -1,0 +1,44 @@
+[
+  {
+    "question": "What is ZeroQuery?",
+    "answer": "ZeroQuery is the Proof-of-Intent (PoI) Protocol — open infrastructure for AI-to-AI intent resolution with non-custodial payment rails. Instead of searching, AI agents declare an intent (what they need, budget, and quality requirements). The gossip network of solver nodes competes to fulfill it. Settlement is non-custodial via x402 USDC bonds on Solana. No token. No custody. No central registry.",
+    "category": "product",
+    "url": "https://scriptmasterlabs.com"
+  },
+  {
+    "question": "What coins does ZeroQuery use and for what?",
+    "answer": "ZeroQuery uses 5 coins across 3 roles: SOL (gossip, micro-fees, broadcast anchoring — company revenue is SOL only); USDC on Solana (primary intent bond and settlement); XRP (cross-chain bridge liquidity); RLUSD (XRPL-native stable settlement); XAH (DID resolution and soulbound reputation on Xahau). The company never holds, pools, or routes USDC, XRP, or RLUSD — zero custodial exposure.",
+    "category": "protocol",
+    "url": "https://github.com/timwal78/zeroquery-protocol"
+  },
+  {
+    "question": "Can ZeroQuery work without ScriptMasterLabs nodes?",
+    "answer": "Yes — by design. ZeroQuery follows the WordPress.org / WordPress.com isolation model: the protocol spec requires that it function entirely without the company's nodes. Anyone can run a @zeroquery/relay gossip node. The hosted SaaS, dashboard, and billing live in a separate private repo (NEXUS402), not this one.",
+    "category": "protocol",
+    "url": "https://github.com/timwal78/zeroquery-protocol"
+  },
+  {
+    "question": "What is an SDK package and what does it do?",
+    "answer": "@zeroquery/sdk is the TypeScript SDK providing DID resolution, intent gossip, Intent Dust event handling, and resolver utilities. It has 27 passing tests and requires no external services to run. Install with: pnpm --filter @zeroquery/sdk build && pnpm --filter @zeroquery/sdk test.",
+    "category": "sdk",
+    "url": "https://github.com/timwal78/zeroquery-protocol"
+  },
+  {
+    "question": "What is the xah-did hook?",
+    "answer": "xah-did is a Xahau Hook written in C and compiled to wasm32. It resolves DIDs (Decentralized Identifiers) and manages soulbound reputation on the Xahau ledger. DID documents map to XRPL/Xahau wallet addresses; reputation scores decay over time (XAH layer). Build with: pnpm hook:build.",
+    "category": "protocol",
+    "url": "https://github.com/timwal78/zeroquery-protocol"
+  },
+  {
+    "question": "What is the current phase status?",
+    "answer": "Phase 1 is complete: @zeroquery/sdk (27 tests passing), @zeroquery/relay (6 tests passing), poi-gossip and poi-escrow Anchor programs compile, xah-did hook compiles to wasm32, and the end-to-end Phase 1 flow runs via pnpm example. Phase 2 covers ZK provenance circuits. Live Xahau-testnet/devnet deploy is pending credentials (runbook in docs/DEPLOY.md).",
+    "category": "status",
+    "url": "https://github.com/timwal78/zeroquery-protocol"
+  },
+  {
+    "question": "Who built ZeroQuery and is it open source?",
+    "answer": "ZeroQuery was built by ScriptMasterLabs (Script Master Labs LLC), an SDVOSB. The protocol repo is Apache-2.0 licensed. The private NEXUS402 repo (hosted SaaS, billing, Rail Miles, affiliate tracking) is separate and proprietary. Only the open, runnable-by-anyone parts are in this repo.",
+    "category": "company",
+    "url": "https://scriptmasterlabs.com"
+  }
+]

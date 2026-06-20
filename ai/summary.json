@@ -1,0 +1,68 @@
+{
+  "product": "ZeroQuery — Proof-of-Intent (PoI) Protocol",
+  "tagline": "Agents don't search. They declare. The network competes.",
+  "description": "ZeroQuery is open infrastructure for AI-to-AI intent resolution with non-custodial payment rails. Agents declare a PoIIntent; the gossip network competes to fulfill it; settlement is non-custodial via x402 USDC bonds on Solana. Identity and reputation live on Xahau via soulbound DID hooks. No token. No custody. No central registry. Mirrors the WordPress.org/WordPress.com split — the protocol functions without the company's nodes.",
+  "url": "https://scriptmasterlabs.com",
+  "github": "https://github.com/timwal78/zeroquery-protocol",
+  "license": "Apache-2.0",
+  "organization": "ScriptMasterLabs / Script Master Labs LLC (SDVOSB)",
+
+  "coin_stack": [
+    {"coin": "SOL", "layer": "Infrastructure", "role": "Gossip, micro-fees, broadcast anchoring. Company revenue is SOL only."},
+    {"coin": "USDC (SPL)", "layer": "Settlement", "role": "Primary intent bond + settlement on Solana"},
+    {"coin": "XRP", "layer": "Settlement", "role": "Cross-chain rail / bridge liquidity"},
+    {"coin": "RLUSD", "layer": "Settlement", "role": "XRPL-native stable settlement"},
+    {"coin": "XAH", "layer": "Identity", "role": "DID resolution + soulbound reputation hooks on Xahau"}
+  ],
+
+  "custody_model": "Zero custody — company never holds, pools, or routes USDC/XRP/RLUSD. Only treasury is SOL SaaS revenue.",
+
+  "components": [
+    {
+      "name": "poi-gossip",
+      "type": "Anchor/Rust program",
+      "layer": "L1",
+      "description": "Intent broadcast + Intent Dust event on Solana"
+    },
+    {
+      "name": "poi-escrow",
+      "type": "Anchor/Rust program",
+      "layer": "L3",
+      "description": "Non-custodial USDC intent bonds via x402"
+    },
+    {
+      "name": "xah-did",
+      "type": "Xahau Hook (C → wasm32)",
+      "description": "DID resolution + soulbound reputation on Xahau"
+    },
+    {
+      "name": "@zeroquery/sdk",
+      "type": "TypeScript package",
+      "description": "DID resolution, intent gossip, Intent Dust, resolver"
+    },
+    {
+      "name": "@zeroquery/relay",
+      "type": "TypeScript package",
+      "description": "Open-source gossip node — anyone can run one"
+    }
+  ],
+
+  "quick_start": {
+    "sdk_install": "pnpm install && pnpm --filter @zeroquery/sdk build",
+    "sdk_test": "pnpm --filter @zeroquery/sdk test",
+    "hook_build": "pnpm hook:build",
+    "anchor_build": "anchor build"
+  },
+
+  "did_resolution_example": {
+    "code": "import { resolveDid, XahauJsonRpcReader } from '@zeroquery/sdk';\nconst reader = new XahauJsonRpcReader('https://xahau.network');\nconst { didDocument, reputation } = await resolveDid('did:poi:xah:rHb9...', reader);\nconsole.log(reputation?.decayedScore);"
+  },
+
+  "phase_status": {
+    "phase_1": "Complete — SDK (27 tests), relay (6 tests), poi-gossip, poi-escrow compile, xah-did wasm32, end-to-end flow",
+    "phase_2": "Planned — ZK provenance circuits",
+    "live_deploy": "Pending credentials — runbook in docs/DEPLOY.md"
+  },
+
+  "isolation_rule": "No proprietary engines, scoring matrices, or sequence constants in this repo. Protocol must function without company nodes."
+}

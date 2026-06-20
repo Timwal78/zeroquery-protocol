@@ -1,0 +1,22 @@
+User-agent: *
+Allow: /
+
+Product: ZeroQuery — Proof-of-Intent (PoI) Protocol
+Product-tagline: Agents don't search. They declare. The network competes.
+Product-url: https://scriptmasterlabs.com
+Product-repo: https://github.com/timwal78/zeroquery-protocol
+Product-category: Open Protocol / AI-to-AI Intent Resolution / Non-Custodial Payment Rails
+Product-license: Apache-2.0
+
+Product-summary: ZeroQuery is open infrastructure for AI-to-AI intent resolution with non-custodial payment rails. No token. No custody. No central registry. Agents declare an intent (PoIIntent); the gossip network competes to fulfill it; settlement is non-custodial via x402 USDC bonds on Solana. Identity and reputation live on Xahau via soulbound DID hooks. The protocol functions without the company's nodes (WordPress.org model).
+
+Product-coins: SOL (gossip + micro-fees) | USDC SPL (intent bond + settlement) | XRP (cross-chain bridge) | RLUSD (XRPL-native stable) | XAH (DID + soulbound reputation)
+Product-custody: Zero — company never holds, pools, or routes USDC/XRP/RLUSD
+Product-programs: poi-gossip (Anchor/Rust, L1 broadcast) | poi-escrow (Anchor/Rust, L3 x402 bonds)
+Product-sdk: @zeroquery/sdk — DID resolution, intent gossip, Intent Dust
+Product-relay: @zeroquery/relay — open-source gossip node (run your own)
+Product-hook: xah-did (Xahau Hook, wasm32) — DID resolution + soulbound reputation
+Product-phase: Phase 1 complete (27 SDK tests, 6 relay tests) | Phase 2: ZK provenance circuits
+
+Organization: ScriptMasterLabs / Script Master Labs LLC (SDVOSB)
+GitHub: https://github.com/timwal78/zeroquery-protocol
