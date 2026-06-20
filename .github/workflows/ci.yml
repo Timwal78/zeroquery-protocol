@@ -46,6 +46,7 @@ jobs:
         with:
           workspaces: ". -> target"
       - run: cargo check --workspace
+      - run: cargo test -p poi-subscription
 
   zk-circuits:
     name: ZK circuits (manifest validation)
@@ -66,3 +67,14 @@ jobs:
           # manifest, so validate the two member packages only.
           cargo read-manifest --manifest-path packages/zk-circuits/program/Cargo.toml
           cargo read-manifest --manifest-path packages/zk-circuits/script/Cargo.toml
+
+  circuits:
+    name: ZK provenance reference (JS)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 20
+      - run: cd circuits && npm install
+      - run: cd circuits && npm test
