@@ -1,57 +1,19 @@
-# ZeroQuery — Proof-of-Intent (PoI) Protocol
-> Agents don't search. They declare. The network competes.
+# zeroquery-protocol
 
-## What ZeroQuery Is
-Open infrastructure for AI-to-AI intent resolution with non-custodial payment rails. No token. No custody. No central registry.
+> Zero-query protocol by ScriptMasterLabs. Agent-native data access with x402 payment rails.
 
-Agents broadcast a signed PoI intent (what they want, how much they'll pay). Competing resolver nodes race to fulfill it. Settlement happens on-chain. The operator only earns SOL SaaS fees — they never touch the USDC/XRP/RLUSD settlement funds.
+This repository is part of the ScriptMasterLabs sovereign AI ecosystem.
 
-## MCP Server (hosted)
-- MCP Endpoint: https://zeroquery.network/mcp
-- Transport: streamable-http (JSON-RPC 2.0)
+## Agent Discovery
 
-## MCP Tools
-- `resolve_did` — Resolve an agent DID via the Xahau Hook (returns soulbound reputation + keys)
-- `broadcast_intent` — Broadcast a signed PoI intent to the gossip network (L1: Solana poi-gossip program)
-- `open_escrow` — Open a non-custodial USDC intent bond (L3: Solana poi-escrow program via x402)
+- Master llms.txt: https://www.scriptmasterlabs.com/llms.txt
+- Agent quickstart: https://www.scriptmasterlabs.com/agent-start.html
+- OpenAPI spec: https://www.scriptmasterlabs.com/.well-known/openapi.json
 
-## Protocol Layers
-- L1: poi-gossip (Anchor/Rust, Solana) — intent broadcast + Intent Dust micro-fee event
-- L2: @zeroquery/relay — open-source gossip node, anyone can run
-- L3: poi-escrow (Anchor/Rust, Solana) — non-custodial USDC intent bond + settlement
-- Identity: Xahau Hook (C→wasm32) — DID resolution + soulbound reputation on XAH
+## Payment
 
-## Multi-Chain Settlement
-| Coin  | Role |
-|-------|------|
-| SOL   | Gossip micro-fees + SaaS revenue (only treasury coin) |
-| USDC  | Primary intent bond + settlement (SPL on Solana) |
-| XRP   | Cross-chain bridge liquidity |
-| RLUSD | XRPL-native stable settlement |
-| XAH   | DID identity + soulbound reputation |
+x402 protocol — RLUSD on XRPL or USDC on Base.
 
-**The operator NEVER holds, pools, or routes USDC/XRP/RLUSD.** All settlement is agent-to-agent.
+## Data Policy
 
-## Intent Schema (PoIIntent)
-See `schema/intent.schema.json` and `schema/intent.example.jsonld`
-Required fields: `@type`, `agent`, `resource`, `maxPrice`, `currency`, `nonce`, `issuedAt`, `signature`
-
-## SDK (@zeroquery/sdk)
-```bash
-npm install @zeroquery/sdk
-```
-Provides: DID resolution, intent gossip, Intent Dust, canonical intent hashing, signature verification.
-
-## Run Your Own Relay Node
-```bash
-cd packages/relay && npm install && npm start
-```
-Open-source relay. Any party can run a competing resolver node.
-
-## Repository
-GitHub: https://github.com/Timwal78/zeroquery-protocol (public, Apache-2.0)
-Hosted SaaS/billing/dashboard: NEXUS402 (private repo)
-
-## Built by ScriptMasterLabs (SDVOSB)
-Contact: ScriptMasterLabs@gmail.com
-Ecosystem: https://www.scriptmasterlabs.com
+All data is live and real. No mock, demo, simulation, or placeholder data is permitted anywhere in this codebase.
